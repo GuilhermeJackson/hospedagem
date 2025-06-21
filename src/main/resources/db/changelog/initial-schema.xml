@@ -1,0 +1,44 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.4.xsd">
+
+    <changeSet id="create-initial-tables" author="guilherme.lamim">
+        <createTable tableName="guest">
+            <column name="id" type="uuid">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="cpf" type="varchar(14)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="phone" type="varchar(20)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="reserve">
+            <column name="id" type="uuid">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="checkin" type="timestamp"/>
+            <column name="checkout" type="timestamp"/>
+            <column name="garage" type="boolean"/>
+            <column name="id_guest" type="uuid">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <!-- Foreign Key -->
+        <addForeignKeyConstraint
+                baseTableName="reserve"
+                baseColumnNames="id_guest"
+                constraintName="fk_reserve_guest"
+                referencedTableName="guest"
+                referencedColumnNames="id"/>
+    </changeSet>
+</databaseChangeLog>
