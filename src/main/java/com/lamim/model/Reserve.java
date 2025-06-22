@@ -1,8 +1,7 @@
 package com.lamim.model;
 
-import com.lamim.model.dto.GuestDto;
-import com.lamim.model.dto.ReserveDto;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -23,17 +22,19 @@ public class Reserve {
     private UUID id;
 
     @Column(name = "checkin")
+    @NotEmpty(message = "Checkin não pode ser vazio")
     private LocalDateTime  checkin;
 
+    @NotEmpty(message = "Checkout não pode ser vazio")
     @Column(name = "checkout")
     private LocalDateTime  checkout;
 
+    @NotEmpty(message = "Garage não pode ser vazio")
     @Column(name = "garage")
     private boolean  garage;
 
+    @NotEmpty(message = "Guest não pode ser vazio")
     @ManyToOne(targetEntity = Guest.class, fetch = FetchType.EAGER)
     @JoinColumn(name = "id_guest", referencedColumnName = "id")
     private Guest guest;
-
-
 }

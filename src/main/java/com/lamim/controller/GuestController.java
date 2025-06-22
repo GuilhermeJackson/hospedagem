@@ -1,9 +1,7 @@
 package com.lamim.controller;
 
 import com.lamim.model.Guest;
-import com.lamim.model.dto.GuestDto;
 import com.lamim.service.GuestService;
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -35,16 +33,9 @@ public class GuestController {
     }
 
     @PostMapping
-    private ResponseEntity<Object> create(@RequestBody @Valid GuestDto dto ) {
+    private ResponseEntity<Object> create(@RequestBody @Valid Guest guest ) {
         try {
-            Guest guest = Guest.builder()
-                    .name(dto.getName())
-                    .cpf(dto.getCpf())
-                    .phone(dto.getPhone())
-                    .build();
-
             Guest savedGuest = guestService.save(guest);
-
             return new ResponseEntity<>(savedGuest, HttpStatus.CREATED);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Erro ao criar hóspede: " + e.getMessage());
@@ -54,12 +45,7 @@ public class GuestController {
     @PutMapping("/{id}")
     public ResponseEntity<Object> update(@PathVariable UUID id, @RequestBody @Valid Guest guest) {
         try {
-            Guest guestFind = guestService.findById(id).orElseThrow(() -> new EntityNotFoundException("Hóspede não encontrado"));
-            guestFind.setName(guest.getName());
-            guestFind.setCpf(guest.getCpf());
-            guestFind.setPhone(guest.getPhone());
-            Guest updatedGuest = guestService.save(guestFind);
-
+            Guest updatedGuest = guestService.update(id, guest);
             return ResponseEntity.ok(updatedGuest);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Erro ao atualizar hóspede: " + e.getMessage());

@@ -26,8 +26,8 @@ public class ReserveController {
     @PostMapping
     public ResponseEntity<Object> create(@RequestBody @Valid Reserve reserve) {
         try {
-            Reserve reserveSaved = service.save(reserve);
-            return new ResponseEntity<>(reserveSaved, HttpStatus.CREATED);
+            service.save(reserve);
+            return new ResponseEntity<>(HttpStatus.CREATED);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Erro ao criar reserva: " + e.getMessage());
         }
